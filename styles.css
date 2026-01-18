@@ -24,7 +24,10 @@ body {
   color: #fff;
   padding: 1rem 0;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 .header .container {
   display: flex;
@@ -298,7 +301,7 @@ section {
 }
 .about h2 {
   margin-bottom: 3rem;
-  color: #000d0d;
+  color: rgb(1, 16, 16)10, 10;
 }
 .about-wrapper {
   display: grid;
@@ -379,7 +382,7 @@ section {
   background: #fafafa;
 }
 .services h2 {
-  color: #000d0d;
+  color: #111313;
   margin-bottom: 3rem;
 }
 .services .cards {
@@ -569,7 +572,7 @@ section {
   background: linear-gradient(135deg, #f0f7f7 0%, #ffffff 100%);
 }
 .how-we-work h2 {
-  color: #000d0d;
+  color: #101111;
   margin-bottom: 3rem;
 }
 .process-flow {
@@ -819,6 +822,18 @@ footer {
     padding: 0.8rem 0;
   }
   
+  .header .container {
+    padding: 0 1rem;
+  }
+  
+  .brand {
+    margin-left: 0.5rem;
+  }
+  
+  .menu-toggle {
+    margin-right: 0.5rem;
+  }
+  
   .logo-icon {
     width: 35px;
     height: 35px;
@@ -1050,6 +1065,18 @@ footer {
   /* Container */
   .container {
     padding: 0.8rem;
+  }
+  
+  .header .container {
+    padding: 0 0.8rem;
+  }
+  
+  .brand {
+    margin-left: 0.3rem;
+  }
+  
+  .menu-toggle {
+    margin-right: 0.3rem;
   }
   
   /* Header */
