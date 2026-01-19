@@ -1046,6 +1046,18 @@ footer {
   .brand {
     gap: 0.5rem;
   }
+  .logo-image {
+  height: 25px;
+  transition: all 0.3s ease;
+  /* background-color: #0a9396; */
+  padding: 3px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 1.0rem;
+  letter-spacing: 0.1em;
+  transform: scaleX(1.1);
+  display: inline-block;
+}
   
   .hero {
     padding: 4rem 0.8rem 3rem;
