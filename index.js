@@ -1,3 +1,41 @@
+// HERO TEXT FADE SLIDER - MUST BE AT TOP TO INITIALIZE FIRST
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+let currentSlide = 0;
+const SLIDE_INTERVAL = 7000; // 7s
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+  
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+
+  currentSlide = index;
+}
+
+// Auto slide
+let slideTimer = setInterval(() => {
+  const next = (currentSlide + 1) % slides.length;
+  showSlide(next);
+}, SLIDE_INTERVAL);
+
+// Dot navigation
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    clearInterval(slideTimer); // Clear the auto-slide when user clicks
+    showSlide(index);
+    // Restart auto-slide after user interaction
+    slideTimer = setInterval(() => {
+      const next = (currentSlide + 1) % slides.length;
+      showSlide(next);
+    }, SLIDE_INTERVAL);
+  });
+});
+
 // Staggered animations on scroll with Intersection Observer
 if ('IntersectionObserver' in window) {
   const staggerObserver = new IntersectionObserver(
@@ -56,7 +94,7 @@ if ('IntersectionObserver' in window) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('show');
-          observer.unobserve(entry.target); // animate once
+          observer.unobserve(entry); // animate once
         }
       });
     },
@@ -79,8 +117,8 @@ if (menuToggle && navMenu) {
   });
 
   // Close menu when any nav link is clicked
-  const navLinks = navMenu.querySelectorAll('a');
-  navLinks.forEach(link => {
+  const navLinksMenu = navMenu.querySelectorAll('a');
+  navLinksMenu.forEach(link => {
     link.addEventListener('click', () => {
       navMenu.classList.remove('active');
     });
@@ -103,7 +141,7 @@ function revealServices() {
 window.addEventListener('scroll', revealServices);
 window.addEventListener('load', revealServices);
 
-// Rotating Testimonials with Avatars (Black professionals from Africa)
+// Rotating Testimonials with Avatars
 const testimonials = [
   { text: '"ThothAi transformed our workflow—responses are instant and we now capture more leads than ever!"', author: 'Ashley, CEO of LocalBiz', photo: 'https://i.pravatar.cc/150?img=49' },
   { text: '"The AI automation saved our team hours daily and allowed us to focus on growth."', author: 'Brad, Founder of TechSolutions', photo: 'https://i.pravatar.cc/150?img=14' },
@@ -184,7 +222,7 @@ if (contactForm) {
     // Format the message for WhatsApp
     const whatsappMessage = `*New Contact Form Submission*%0A%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0ABusiness: ${encodeURIComponent(business)}%0AMessage: ${encodeURIComponent(message)}`;
 
-    // WhatsApp number (replace with your actual number)
+    // WhatsApp number
     const whatsappPhone = '233533769658';
     const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${whatsappMessage}`;
 
@@ -195,6 +233,3 @@ if (contactForm) {
     contactForm.reset();
   });
 }
-
-
-
