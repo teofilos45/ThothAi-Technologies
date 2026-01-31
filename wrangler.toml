@@ -1,0 +1,6 @@
+name = "thothai-chatbot"
+main = "src/worker.js"
+compatibility_date = "2024-12-01"
+
+[vars]
+WHATSAPP_NUMBER = "233533769658"

@@ -1,4 +1,5 @@
 // HERO TEXT FADE SLIDER - MUST BE AT TOP TO INITIALIZE FIRST
+const sliderTrack = document.querySelector('.slider-track');
 const slides = document.querySelectorAll('.slide');
 const dots = document.querySelectorAll('.dot');
 
@@ -6,6 +7,10 @@ let currentSlide = 0;
 const SLIDE_INTERVAL = 7000; // 7s
 
 function showSlide(index) {
+  if (sliderTrack) {
+    sliderTrack.style.transform = 'translateX(-' + (index * 100) + '%)';
+  }
+
   slides.forEach((slide, i) => {
     slide.classList.toggle('active', i === index);
   });
@@ -143,7 +148,7 @@ window.addEventListener('load', revealServices);
 
 // Rotating Testimonials with Avatars
 const testimonials = [
-  { text: '"ThothAi transformed our workflow—responses are instant and we now capture more leads than ever!"', author: 'Ashley, CEO of LocalBiz', photo: 'https://i.pravatar.cc/150?img=49' },
+  { text: '"ThothAI transformed our workflow—responses are instant and we now capture more leads than ever!"', author: 'Ashley, CEO of LocalBiz', photo: 'https://i.pravatar.cc/150?img=49' },
   { text: '"The AI automation saved our team hours daily and allowed us to focus on growth."', author: 'Brad, Founder of TechSolutions', photo: 'https://i.pravatar.cc/150?img=14' },
   { text: '"Amazing results! Customer engagement has never been smoother or faster."', author: 'Grace, Marketing Director', photo: 'https://i.pravatar.cc/150?img=47' }
 ];
@@ -233,3 +238,161 @@ if (contactForm) {
     contactForm.reset();
   });
 }
+
+
+
+// Chat widget (simplified for non-streaming)
+const chatLauncher = document.getElementById('chatLauncher');
+const chatWidget = document.getElementById('chatWidget');
+const chatClose = document.getElementById('chatClose');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatBody = document.getElementById('chatBody');
+
+function ensureChatChips() {
+  const footer = document.querySelector('.chat-footer');
+  if (!footer) return;
+  if (footer.querySelector('.chat-chips')) return;
+  const chipsWrap = document.createElement('div');
+  chipsWrap.className = 'chat-chips';
+  const labels = ['Pricing & plans', 'Book a demo', 'What can you automate?'];
+  labels.forEach((label) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chat-chip';
+    btn.setAttribute('data-text', label);
+    btn.textContent = label;
+    chipsWrap.appendChild(btn);
+  });
+  footer.insertBefore(chipsWrap, footer.firstChild);
+}
+
+ensureChatChips();
+const chatChips = document.querySelectorAll('.chat-chip');
+
+const workerUrl = chatWidget?.dataset.workerUrl || '/chat';
+const whatsappNumber = chatWidget?.dataset.whatsapp || '233533769658';
+const chatHistory = [];
+
+function appendBubble(text, role = 'bot') {
+  const bubble = document.createElement('div');
+  bubble.className = `chat-bubble ${role}`;
+  bubble.textContent = text;
+  chatBody.appendChild(bubble);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  return bubble;
+}
+
+function appendTyping() {
+  const typing = document.createElement('div');
+  typing.className = 'chat-typing';
+  typing.textContent = 'Assistant is typing...';
+  chatBody.appendChild(typing);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  return typing;
+}
+
+function shouldHandoff(message) {
+  return /human|agent|support|whatsapp|call|phone/i.test(message);
+}
+
+function handoffMessage() {
+  const link = `https://wa.me/${whatsappNumber}`;
+  appendBubble(`Want a human? Continue on WhatsApp: ${link}`, 'bot');
+}
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  appendBubble(text, 'user');
+  chatHistory.push({ role: 'user', content: text });
+  chatInput.value = '';
+
+  if (shouldHandoff(text)) {
+    handoffMessage();
+  }
+
+  const typing = appendTyping();
+  
+  try {
+    const res = await fetch(workerUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: chatHistory })
+    });
+
+    typing.remove();
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('API Error:', errorText);
+      appendBubble('Sorry, I could not respond right now.', 'bot');
+      return;
+    }
+
+    const data = await res.json();
+    
+    if (data.message) {
+      appendBubble(data.message, 'bot');
+      chatHistory.push({ role: 'assistant', content: data.message });
+    } else if (data.error) {
+      console.error('API returned error:', data.error);
+      appendBubble('Sorry, I could not respond right now.', 'bot');
+    } else {
+      appendBubble('Sorry, I could not respond right now.', 'bot');
+    }
+    
+  } catch (error) {
+    typing.remove();
+    console.error('Fetch error:', error);
+    appendBubble('Sorry, I could not respond right now.', 'bot');
+  }
+}
+
+if (chatLauncher && chatWidget) {
+  chatLauncher.addEventListener('click', () => {
+    const isOpen = chatWidget.classList.contains('open');
+    if (isOpen) {
+      chatWidget.classList.remove('open');
+      chatWidget.setAttribute('aria-hidden', 'true');
+    } else {
+      chatWidget.classList.add('open');
+      chatWidget.setAttribute('aria-hidden', 'false');
+      chatInput?.focus();
+    }
+  });
+}
+
+if (chatClose && chatWidget) {
+  chatClose.addEventListener('click', () => {
+    chatWidget.classList.remove('open');
+    chatWidget.setAttribute('aria-hidden', 'true');
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!chatWidget?.classList.contains('open')) return;
+  const target = e.target;
+  if (!(target instanceof Element)) return;
+  if (chatWidget.contains(target) || chatLauncher?.contains(target)) return;
+  chatWidget.classList.remove('open');
+  chatWidget.setAttribute('aria-hidden', 'true');
+});
+
+chatSend?.addEventListener('click', sendMessage);
+chatInput?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+chatChips.forEach((chip) => {
+  chip.addEventListener('click', () => {
+    const text = chip.getAttribute('data-text') || chip.textContent || '';
+    chatInput.value = text.trim();
+    sendMessage();
+  });
+});
+
