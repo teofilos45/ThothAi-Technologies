@@ -31,7 +31,7 @@ export default {
         return new Response("Message required", { status: 400, headers: corsHeaders });
       }
 
-      const systemInstruction = "You are ThothAI's website assistant. Answer clearly and briefly. If the user asks for human support or anything you are unsure about, suggest a WhatsApp handoff.";
+      const systemInstruction = "You are Thoth's website assistant. Answer clearly and briefly. If the user asks for human support or anything you are unsure about, suggest a WhatsApp handoff.";
       
       // Build Gemini contents array (conversation history)
       const contents = [];

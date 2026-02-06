@@ -148,7 +148,7 @@ window.addEventListener('load', revealServices);
 
 // Rotating Testimonials with Avatars
 const testimonials = [
-  { text: '"ThothAI transformed our workflow—responses are instant and we now capture more leads than ever!"', author: 'Ashley, CEO of LocalBiz', photo: 'https://i.pravatar.cc/150?img=49' },
+  { text: '"Thoth transformed our workflow—responses are instant and we now capture more leads than ever!"', author: 'Ashley, CEO of LocalBiz', photo: 'https://i.pravatar.cc/150?img=49' },
   { text: '"The AI automation saved our team hours daily and allowed us to focus on growth."', author: 'Brad, Founder of TechSolutions', photo: 'https://i.pravatar.cc/150?img=14' },
   { text: '"Amazing results! Customer engagement has never been smoother or faster."', author: 'Grace, Marketing Director', photo: 'https://i.pravatar.cc/150?img=47' }
 ];
