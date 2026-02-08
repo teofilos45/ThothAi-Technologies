@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order | Severina Restaurant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-inactive { filter: grayscale(1); opacity: 0.3; }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        body { background-color: #0f172a; color: white; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div id="app" class="max-w-md w-full bg-slate-800 rounded-3xl shadow-2xl p-8 border border-slate-700">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-amber-400">SEVERIN Plus</h1>
+            <p id="order-id-label" class="text-slate-400 text-sm">Loading Order...</p>
+        </div>
+
+        <div id="status-card" class="bg-slate-900 rounded-2xl p-6 mb-8 border-l-4 border-amber-500">
+            <p class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Current Status</p>
+            <h2 id="status-text" class="text-2xl font-black mt-1">Fetching...</h2>
+            <p id="status-note" class="text-sm text-slate-400 mt-2 italic">Connecting to kitchen...</p>
+        </div>
+
+        <div class="space-y-8 mb-8 relative">
+            <div id="line" class="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-700"></div>
+            
+            <div id="step-1" class="flex items-center gap-4 relative z-10 step-inactive">
+                <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-bold">1</div>
+                <div><p class="font-bold">Order Received</p><p class="text-xs text-slate-400">Awaiting kitchen confirmation</p></div>
+            </div>
+
+            <div id="step-2" class="flex items-center gap-4 relative z-10 step-inactive">
+                <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-bold">2</div>
+                <div><p class="font-bold">Chef is Cooking</p><p class="text-xs text-slate-400">Your meal is being prepared</p></div>
+            </div>
+
+            <div id="step-3" class="flex items-center gap-4 relative z-10 step-inactive">
+                <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-bold">3</div>
+                <div><p class="font-bold">Ready for Pickup</p><p class="text-xs text-slate-400">Hot and ready to go!</p></div>
+            </div>
+        </div>
+
+        <div id="action-area" class="space-y-3">
+            <button id="btn-cancel" class="hidden w-full py-3 bg-red-500/10 text-red-500 border border-red-500/50 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all">Cancel Order</button>
+            <a href="https://wa.me/+233245590858" class="block w-full py-3 bg-slate-700 text-center rounded-xl font-bold hover:bg-slate-600 transition-all">Contact Support</a>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyasNz4mf8OYfFiSyu4CF9wvAYprZS__X39kf0Sp4UlqSGoD4WtHl11_leFtq2YyEDcrg/exec";
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+
+        async function fetchStatus() {
+            if (!orderId) {
+                document.getElementById('status-text').innerText = "Invalid ID";
+                return;
+            }
+            document.getElementById('order-id-label').innerText = "Order #" + orderId;
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=track&id=${orderId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    updateUI(data);
+                } else {
+                    document.getElementById('status-text').innerText = "Not Found";
+                }
+            } catch (e) {
+                console.error("Error:", e);
+            }
+        }
+
+        function updateUI(data) {
+            const status = data.status;
+            const text = document.getElementById('status-text');
+            const note = document.getElementById('status-note');
+            const cancelBtn = document.getElementById('btn-cancel');
+
+            text.innerText = status;
+
+            // Reset steps
+            [1, 2, 3].forEach(i => document.getElementById(`step-${i}`).classList.add('step-inactive'));
+
+            if (status === "Pending") {
+                document.getElementById('step-1').classList.remove('step-inactive');
+                document.getElementById('step-1').classList.add('pulse');
+                note.innerText = "You can still cancel or update your order.";
+                cancelBtn.classList.remove('hidden');
+            } 
+            else if (status === "In Progress") {
+                document.getElementById('step-1').classList.remove('step-inactive');
+                document.getElementById('step-2').classList.remove('step-inactive');
+                document.getElementById('step-2').classList.add('pulse');
+                note.innerText = "The kitchen has started! Changes are no longer possible.";
+                cancelBtn.classList.add('hidden');
+            }
+            else if (status === "Ready") {
+                [1, 2, 3].forEach(i => document.getElementById(`step-${i}`).classList.remove('step-inactive'));
+                note.innerText = "Pick up your meal at the counter.";
+                cancelBtn.classList.add('hidden');
+            }
+            else if (status === "Declined" || status === "Cancelled") {
+                text.classList.add('text-red-500');
+                note.innerText = data.reason || "This order is no longer active.";
+                cancelBtn.classList.add('hidden');
+                document.getElementById('line').classList.add('bg-red-900');
+            }
+        }
+
+        // Poll every 15 seconds
+        fetchStatus();
+        setInterval(fetchStatus, 15000);
+    </script>
+</body>
+</html>
