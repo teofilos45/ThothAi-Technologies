@@ -1,2 +1,2 @@
-# ThothAi-Technologies
+# Thoth-Technologies
 Ai tool for automating almost everything

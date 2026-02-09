@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ThothAi Technologies</title>
+<title>Thoth Technologies</title>
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
@@ -10,10 +10,7 @@
   <header class="header">
     <div class="container">
       <div class="brand">
-        <div class="logo-icon">
-          <i class="fa-solid fa-brain"></i>
-        </div>
-        <span class="brand-name">ThothAi</span>
+        <img class="brand-logo" src="transparent.jpg" alt="Thoth logo">
       </div>
       <button class="menu-toggle" aria-label="Toggle navigation">
         <i class="fa-solid fa-bars"></i>
@@ -30,16 +27,57 @@
     </div>
   </header>
 
+    <!-- UPDATED HERO SECTION - Split Screen with Text Slider -->
   <section id="home" class="hero">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-      <h1>AI Solutions That Power Business Growth</h1>
-      <p class="hero-subtitle">Transform your business with intelligent automation that works 24/7</p>
-      <p class="hero-description">
-        Automate workflows, engage customers instantly, and make data-driven decisions. From reducing manual tasks to boosting sales, we turn AI into tangible business results.
-      </p>
-      <a href="https://wa.me/233533769658" class="cta hero-cta">Book a Free Demo</a>
+    <div class="hero-container">
+      <!-- Left Side: Text Slider -->
+      <div class="hero-text-section">
+        <div class="slider-container">
+          <div class="slider-track">
+          <!-- Slide 1 -->
+          <div class="slide active">
+            <h1>Stop wasting time on <span class="hero-highlight">repetitive tasks</span></h1>
+            <p>AI automation that handles orders, messages & workflows instantly</p>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="slide">
+            <h1>Never miss a <span class="hero-highlight">customer again</span></h1>
+            <p>Transform your business with intelligent automation that works 24/7</p>
+          </div>
+        </div>
+        </div>
+        <div class="hero-actions hero-actions-desktop">
+          <a href="https://wa.me/233533769658" class="hero-cta">Get Started</a>
+        </div>
+        
+      </div>
+
+      <!-- Right Side: Video Demo -->
+      <div class="hero-video-section">
+        <!-- PLACEHOLDER: Replace this entire div with your iframe embed code -->
+        <div class="hero-video-shell">
+          <div class="hero-video-glow"></div>
+          <div class="demo-iframe-container">
+            <iframe src="videos.chat/whatsapp-chat.html" width="100%" height="100%" frameborder="0"></iframe>
+          </div>
+          <div class="hero-video-badge">
+            <span class="badge-dot"></span>
+            Live demo
+          </div>
+        </div>
+
+        <!-- Example of what your code might look like:
+        <div class="demo-iframe-container">
+          <iframe src="your-demo-url" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        -->
+      </div>
+    <div class="hero-actions hero-actions-mobile">
+      <a href="https://wa.me/233533769658" class="hero-cta">Get Started</a>
     </div>
+    </div>
+    <div class="hero-divider" aria-hidden="true"></div>
   </section>
 
   <section id="about" class="about">
@@ -48,12 +86,18 @@
       <div class="about-wrapper">
         <div class="about-mission">
           <h3>Our Mission</h3>
+          <div class="about-illustration" aria-hidden="true">
+          <div class="orbit"></div>
+          <div class="grid"></div>
+          <div class="chip">AI Automation</div>
+        </div>
+
           <p>
-            At ThothAi Technologies, we design practical AI solutions that simplify business operations and deliver measurable impact. We empower businesses—small and large—to automate repetitive tasks, capture insights in real-time, and scale efficiently.
+            At Thoth Technologies, we design practical AI solutions that simplify business operations and deliver measurable impact. We empower businesses—small and large—to automate repetitive tasks, capture insights in real-time, and scale efficiently.
           </p>
           <div class="mission-highlight">
             <p>
-              Whether you want to respond faster to clients, streamline internal workflows, or leverage data for smarter decisions, ThothAi provides the tools and guidance to get you there.
+              Whether you want to respond faster to clients, streamline internal workflows, or leverage data for smarter decisions, Thoth provides the tools and guidance to get you there.
             </p>
           </div>
         </div>
@@ -130,7 +174,7 @@
       <h2>Case Studies & Testimonials</h2>
       <div class="testimonial-card">
         <img src="https://i.pravatar.cc/150?img=49" alt="Ama Mensah" class="testimonial-avatar" />
-        <p class="testimonial-text">"ThothAi transformed our workflow—responses are instant and we now capture more leads than ever!"</p>
+        <p class="testimonial-text">"Thoth transformed our workflow—responses are instant and we now capture more leads than ever!"</p>
         <p class="testimonial-author">— Ama Mensah, CEO of LocalBiz</p>
       </div>
     </div>
@@ -234,7 +278,7 @@
 
   <section id="contact" class="contact">
     <div class="container">
-      <h2>Get Started / Contact Us</h2>
+      <h2>Contact Us</h2>
       <div class="contact-wrapper">
         <div class="contact-info">
           <h3>Let's Connect</h3>
@@ -250,14 +294,14 @@
             <i class="fa-solid fa-envelope"></i>
             <div>
               <h4>Email</h4>
-              <p><a href="mailto:info@thoth.ai">aithoth6@gmail.com</a></p>
+              <p><a href="mailto:admin@thothaigh.com">admin@thothaigh.com</a></p>
             </div>
           </div>
           <div class="info-block">
             <i class="fa-solid fa-map-marker-alt"></i>
             <div>
               <h4>Location</h4>
-              <p>Accra,Ghana</p>
+              <p>Apeguso, Eastern Region</p>
             </div>
           </div>
           <div class="info-block">
@@ -306,9 +350,55 @@
   </section>
 
   <footer>
-    <p>&copy; 2026 ThothAi Technologies</p>
+    <p>&copy; 2026 Thoth Technologies. House No. AP 35/5, Apeguso, Eastern Region, Ghana.</p>
+    <p>Email: admin@thothaigh.com | Digital Address: EA-0750-2782.</p>
   </footer>
 
+
+  <button class="chat-launcher" id="chatLauncher" type="button" aria-label="Open chat">
+    <span class="chat-launcher-icon" aria-hidden="true">●</span>
+    <span class="chat-launcher-text">Ask ThothAI</span>
+  </button>
+
+  <div class="chat-widget" id="chatWidget" aria-hidden="true" data-worker-url="https://Thoth-chatbot.tabaidoo001.workers.dev/chat" data-whatsapp="233533769658">
+      <div class="chat-header">
+        <div>
+          <strong>ThothAI</strong>
+          <span class="chat-status">Online</span>
+        </div>
+        <button class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="chat-bubble bot">Hi, I’m ThothAI. How can I help you?</div>
+      </div>
+      <div class="chat-footer">
+        <div class="chat-chips">
+          <button class="chat-chip" type="button" data-text="Pricing & plans">Pricing & plans</button>
+          <button class="chat-chip" type="button" data-text="Book a demo">Book a demo</button>
+          <button class="chat-chip" type="button" data-text="What can you automate?">What can you automate?</button>
+        </div>
+        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <button id="chatSend" class="chat-send">Send</button>
+      </div>
+  </div>
   <script src="index.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
