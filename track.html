@@ -10,6 +10,26 @@
         .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         body { background-color: #0f172a; color: white; }
+        .action-stack { display: grid; gap: 12px; }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .action-btn:hover { transform: translateY(-1px); }
+        .btn-cancel { background: rgba(239, 68, 68, 0.12); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45); }
+        .btn-cancel:hover { background: rgba(239, 68, 68, 0.2); box-shadow: 0 10px 18px rgba(239, 68, 68, 0.25); color: #fff; }
+        .btn-update { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45); }
+        .btn-update:hover { background: rgba(245, 158, 11, 0.2); box-shadow: 0 10px 18px rgba(245, 158, 11, 0.25); color: #0f172a; }
+        .btn-support { background: #1f2937; color: #e5e7eb; border: 1px solid rgba(255,255,255,0.08); }
+        .btn-support:hover { background: #334155; box-shadow: 0 10px 18px rgba(15, 23, 42, 0.45); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -35,7 +55,7 @@
 
             <div id="step-2" class="flex items-center gap-4 relative z-10 step-inactive">
                 <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-bold">2</div>
-                <div><p class="font-bold">Preparing Order</p><p class="text-xs text-slate-400">Your meal is being prepared</p></div>
+                <div><p class="font-bold">Preparing Order</p><p class="text-xs text-slate-400">Accepted and being processed</p></div>
             </div>
 
             <div id="step-3" class="flex items-center gap-4 relative z-10 step-inactive">
@@ -44,16 +64,37 @@
             </div>
         </div>
 
-        <div id="action-area" class="space-y-3">
-            <button id="btn-cancel" class="hidden w-full py-3 bg-red-500/10 text-red-500 border border-red-500/50 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all">Cancel Order</button>
-            <a href="https://wa.me/+233245590858" class="block w-full py-3 bg-slate-700 text-center rounded-xl font-bold hover:bg-slate-600 transition-all">Contact Support</a>
+        <div id="action-area" class="action-stack">
+            <button id="btn-cancel" class="hidden action-btn btn-cancel">Cancel Order</button>
+            <button id="btn-update" class="hidden action-btn btn-update">Update Order</button>
+            <a href="https://wa.me/+233245590858" class="action-btn btn-support">Contact Support</a>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzO1yMM2F4FpM7RJXGvv3Lj4mvy30fVwnho4I6bQSwWH_N0sjkU1KcNfRIOcdTjyjfC/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyasNz4mf8OYfFiSyu4CF9wvAYprZS__X39kf0Sp4UlqSGoD4WtHl11_leFtq2YyEDcrg/exec";
+        const WHATSAPP_NUMBER = "233245590858";
         const urlParams = new URLSearchParams(window.location.search);
         const orderId = urlParams.get('id');
+        const cancelBtn = document.getElementById('btn-cancel');
+        const updateBtn = document.getElementById('btn-update');
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                if (!orderId) return;
+                const msg = `Cancel order #${orderId}`;
+                const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+                window.open(url, '_blank');
+            });
+        }
+        if (updateBtn) {
+            updateBtn.addEventListener('click', () => {
+                if (!orderId) return;
+                const msg = `Update order #${orderId}`;
+                const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+                window.open(url, '_blank');
+            });
+        }
 
         async function fetchStatus() {
             if (!orderId) {
@@ -80,7 +121,6 @@
             const status = data.status;
             const text = document.getElementById('status-text');
             const note = document.getElementById('status-note');
-            const cancelBtn = document.getElementById('btn-cancel');
 
             text.innerText = status;
 
@@ -92,6 +132,7 @@
                 document.getElementById('step-1').classList.add('pulse');
                 note.innerText = "You can still cancel or update your order.";
                 cancelBtn.classList.remove('hidden');
+                updateBtn.classList.remove('hidden');
             } 
             else if (status === "In Progress") {
                 document.getElementById('step-1').classList.remove('step-inactive');
@@ -99,16 +140,19 @@
                 document.getElementById('step-2').classList.add('pulse');
                 note.innerText = "The kitchen has started! Changes are no longer possible.";
                 cancelBtn.classList.add('hidden');
+                updateBtn.classList.add('hidden');
             }
             else if (status === "Ready") {
                 [1, 2, 3].forEach(i => document.getElementById(`step-${i}`).classList.remove('step-inactive'));
                 note.innerText = "Pick up your meal at the counter.";
                 cancelBtn.classList.add('hidden');
+                updateBtn.classList.add('hidden');
             }
             else if (status === "Declined" || status === "Cancelled") {
                 text.classList.add('text-red-500');
                 note.innerText = data.reason || "This order is no longer active.";
                 cancelBtn.classList.add('hidden');
+                updateBtn.classList.add('hidden');
                 document.getElementById('line').classList.add('bg-red-900');
             }
         }
