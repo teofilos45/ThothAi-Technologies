@@ -99,7 +99,7 @@ if ('IntersectionObserver' in window) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('show');
-          observer.unobserve(entry); // animate once
+          observer.unobserve(entry.target); // animate once
         }
       });
     },
@@ -148,35 +148,69 @@ window.addEventListener('load', revealServices);
 
 // Rotating Testimonials with Avatars
 const testimonials = [
-  { text: '"ThothAI transformed our workflow—responses are instant and we now capture more leads than ever!"', author: 'Ashley, CEO of LocalBiz', photo: 'https://i.pravatar.cc/150?img=49' },
-  { text: '"The AI automation saved our team hours daily and allowed us to focus on growth."', author: 'Brad, Founder of TechSolutions', photo: 'https://i.pravatar.cc/150?img=14' },
-  { text: '"Amazing results! Customer engagement has never been smoother or faster."', author: 'Grace, Marketing Director', photo: 'https://i.pravatar.cc/150?img=47' }
+  {
+    desc: 'ThothAI built an AI-powered order automation system for Severina Plus Restaurant — customers place orders directly on WhatsApp and the team manages everything from their online order management dashboard.',
+    text: '"Our customers now order right from WhatsApp and I manage everything from one dashboard. No more missed calls or messy order sheets — it has completely transformed how we run the restaurant."',
+    author: 'Severina, Owner of Severina Plus Restaurant',
+    photo: 'https://ui-avatars.com/api/?name=Severina&background=0d9488&color=fff&size=150&bold=true'
+  },
+  {
+    desc: '',
+    text: '"ThothAI automated our customer follow-ups and lead capture — our response time dropped from hours to seconds. We have seen a clear jump in conversions."',
+    author: 'Kwame Boateng, CEO of Boateng Logistics, Kumasi',
+    photo: 'https://ui-avatars.com/api/?name=Kwame+B&background=0d9488&color=fff&size=150&bold=true'
+  },
+  {
+    desc: '',
+    text: '"We used to spend hours answering the same customer questions on WhatsApp. ThothAI set up an AI agent that handles it all — our team now focuses on what actually matters."',
+    author: 'Abena Asante, Founder of Asante Fashion House, Accra',
+    photo: 'https://ui-avatars.com/api/?name=Abena+A&background=0d9488&color=fff&size=150&bold=true'
+  },
+  {
+    desc: '',
+    text: '"The workflow automation ThothAI built for us saves at least three hours daily. It is like having an extra team member who never takes a break."',
+    author: 'Kofi Acheampong, Director of Goldcoast Trading Co., Tema',
+    photo: 'https://ui-avatars.com/api/?name=Kofi+A&background=0d9488&color=fff&size=150&bold=true'
+  }
 ];
 
 let currentTestimonial = 0;
 const testimonialTextEl = document.querySelector('.testimonial-text');
 const testimonialAuthorEl = document.querySelector('.testimonial-author');
 const testimonialAvatarEl = document.querySelector('.testimonial-avatar');
+const caseStudyDescEl = document.querySelector('.case-study-desc');
+const testimonialDots = document.querySelectorAll('.testimonial-dot');
 
-// Initialize first testimonial
+function updateTestimonialDots() {
+  testimonialDots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentTestimonial);
+  });
+}
+
+// Severina's case study is hardcoded in HTML and shows first — no init overwrite needed
 if (testimonialTextEl && testimonialAuthorEl && testimonialAvatarEl) {
-  testimonialTextEl.textContent = testimonials[0].text;
-  testimonialAuthorEl.textContent = '— ' + testimonials[0].author;
-  testimonialAvatarEl.src = testimonials[0].photo;
-  testimonialAvatarEl.alt = testimonials[0].author;
-
   function rotateTestimonial() {
     // Fade out
     testimonialTextEl.style.opacity = 0;
     testimonialAuthorEl.style.opacity = 0;
     testimonialAvatarEl.style.opacity = 0;
+    if (caseStudyDescEl) caseStudyDescEl.style.opacity = 0;
 
     setTimeout(() => {
       currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-      testimonialTextEl.textContent = testimonials[currentTestimonial].text;
-      testimonialAuthorEl.textContent = '— ' + testimonials[currentTestimonial].author;
-      testimonialAvatarEl.src = testimonials[currentTestimonial].photo;
-      testimonialAvatarEl.alt = testimonials[currentTestimonial].author;
+      const t = testimonials[currentTestimonial];
+
+      testimonialTextEl.textContent = t.text;
+      testimonialAuthorEl.textContent = '— ' + t.author;
+      testimonialAvatarEl.src = t.photo;
+      testimonialAvatarEl.alt = t.author;
+
+      if (caseStudyDescEl) {
+        caseStudyDescEl.textContent = t.desc || '';
+        caseStudyDescEl.style.display = t.desc ? '' : 'none';
+      }
+
+      updateTestimonialDots();
 
       // Fade in
       testimonialTextEl.style.transition = 'opacity 0.5s';
@@ -185,11 +219,16 @@ if (testimonialTextEl && testimonialAuthorEl && testimonialAvatarEl) {
       testimonialTextEl.style.opacity = 1;
       testimonialAuthorEl.style.opacity = 1;
       testimonialAvatarEl.style.opacity = 1;
-    }, 500); // wait for fade out to finish
+
+      if (caseStudyDescEl && t.desc) {
+        caseStudyDescEl.style.display = '';
+        caseStudyDescEl.style.transition = 'opacity 0.5s';
+        caseStudyDescEl.style.opacity = 1;
+      }
+    }, 500);
   }
 
-  // Rotate every 6 seconds
-  setInterval(rotateTestimonial, 6000);
+  setInterval(rotateTestimonial, 9000);
 }
 
 // FAQ Accordion
