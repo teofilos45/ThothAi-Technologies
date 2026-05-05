@@ -99,6 +99,35 @@ export default {
       }
     }
 
+    if (url.pathname === "/campaign" && request.method === "GET") {
+      const id = url.searchParams.get("id");
+      if (!id) {
+        return new Response(JSON.stringify({ error: "Missing id" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const GAS_URL =
+        "https://script.google.com/macros/s/AKfycbxdzlfx7QBDqmx9ZOxuFH43TwMsdBUnB7rtEBDm3PR1H-2Lzmn-XXwHqKmhwMeuBx-yww/exec";
+
+      try {
+        const gasRes = await fetch(GAS_URL + "?id=" + encodeURIComponent(id), {
+          redirect: "follow",
+        });
+        const data = await gasRes.json();
+        return new Response(JSON.stringify(data), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: "GAS fetch failed: " + err.message }), {
+          status: 502,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     if (url.pathname === "/health") {
       return new Response("ok", { status: 200, headers: corsHeaders });
     }

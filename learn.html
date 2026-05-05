@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -28,6 +28,9 @@
 
     /* -- Utilities -------------------------------------------------- */
     .lp-hidden { display: none !important; }
+
+    /* Override global section text-align from styles.css */
+    #lp-content section { text-align: left; }
 
     /* -- Stagger entrance (CSS transitions, triggered by .lp-show) -- */
     .lp-animate {
@@ -258,11 +261,13 @@
       line-height: 1.2;
       letter-spacing: -0.02em;
       margin-bottom: 0.55rem;
+      text-align: left;
     }
     .lp-camp-subtitle {
       font-size: 1.02rem;
       color: #4b5563;
       line-height: 1.65;
+      text-align: left;
     }
 
     /* -- Markdown body card ----------------------------------------- */
@@ -575,7 +580,7 @@
       </svg>
       <span class="lp-ribbon-text">Verified Business</span>
       <span class="lp-ribbon-dot">·</span>
-      <span class="lp-ribbon-text">Official ThothAI Technologies Campaign</span>
+      <span class="lp-ribbon-text">Official ThothAI Technologies</span>
     </div>
 
     <!-- Hero Image -->
@@ -600,7 +605,7 @@
       <div class="lp-camp-header-inner">
         <div class="lp-wa-tag">
           <i class="fa-brands fa-whatsapp"></i>
-          WhatsApp Campaign
+          WhatsApp
         </div>
         <h1 class="lp-camp-title" id="lp-title"></h1>
         <p class="lp-camp-subtitle" id="lp-subtitle"></p>
@@ -777,8 +782,56 @@
     'use strict';
 
     /* ── Config ──────────────────────────────────────────────────── */
-    var GAS_URL     = 'https://script.google.com/macros/s/AKfycbxdzlfx7QBDqmx9ZOxuFH43TwMsdBUnB7rtEBDm3PR1H-2Lzmn-XXwHqKmhwMeuBx-yww/exec';
+    var GAS_URL     = 'https://thothai-chatbot.aithoth6.workers.dev/campaign';
     var FALLBACK_WA = 'https://wa.me/233533769658';
+
+    /* ── Preview mock data (?preview=1) ──────────────────────────── *
+     * Only used locally. Never fires in production campaign links.   */
+    var MOCK_GLOBAL = {
+      tagline: 'AI automation for modern businesses across Ghana & Africa',
+      default_cta_label: 'Get Started on WhatsApp',
+      default_whatsapp: 'https://wa.me/233533769658'
+    };
+    var MOCK_CONTENT = {
+      id:           'payment-launch',
+      title:        'Automate Your Business with AI — Launch Offer',
+      subtitle:     'Exclusive limited-time pricing for our WhatsApp community. Act before the end of the month.',
+      media_url:    'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=900&q=80',
+      body_content: [
+        '## What You Get',
+        '',
+        '- **24/7 WhatsApp order automation** — your AI handles customer messages around the clock',
+        '- **Custom AI chatbot** trained specifically on your products and services',
+        '- **Order management dashboard** — track every order from one place',
+        '- **Multi-channel support** — WhatsApp, Instagram, Facebook Messenger',
+        '- **Priority onboarding** — go live in under 48 hours',
+        '',
+        '## Why Act Now?',
+        '',
+        'We are offering a **special launch price** to our early adopters. Once this cohort is full, pricing returns to standard rates.',
+        '',
+        '> "ThothAI completely transformed how we handle customer orders. No more missed calls, no more messy order sheets." — *Severina, Severina Plus Restaurant*',
+        '',
+        '## Pricing',
+        '',
+        '| Plan | Monthly Price | Messages Included |',
+        '|------|--------------|-------------------|',
+        '| Starter | GHS 500 | 500 messages |',
+        '| Growth | GHS 1,200 | Unlimited |',
+        '| Enterprise | Custom | Full automation suite |',
+        '',
+        '**All plans include a 14-day free trial.** No credit card required to start.',
+        '',
+        '## How It Works',
+        '',
+        '1. **Consultation** — We analyse your current workflow',
+        '2. **Setup** — Your AI is configured and tested',
+        '3. **Go Live** — Your customers start interacting immediately',
+        '4. **Support** — We monitor and optimise performance for you'
+      ].join('\n'),
+      cta_label:    'Claim Your Offer on WhatsApp',
+      cta_url:      'https://wa.me/233533769658?text=I%20want%20to%20claim%20the%20ThothAI%20launch%20offer'
+    };
 
     /* ── DOM refs ─────────────────────────────────────────────────── */
     var elLoading = document.getElementById('lp-loading');
@@ -837,14 +890,7 @@
         heroImg.src = heroSrc;
         heroImg.alt = title;
       } else {
-        /* Branded gradient placeholder when no image provided */
-        heroWrap.innerHTML =
-          '<div class="lp-hero-placeholder">' +
-            '<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-              '<circle cx="28" cy="28" r="27" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>' +
-              '<path d="M28 12L31 21H40.5L33.2 26.5L36.2 35.5L28 30.2L19.8 35.5L22.8 26.5L15.5 21H25L28 12Z" fill="rgba(255,255,255,0.6)"/>' +
-            '</svg>' +
-          '</div>';
+        heroWrap.style.display = 'none';
       }
 
       /* Title & subtitle */
@@ -896,6 +942,12 @@
 
     /* ── Fetch from Google Apps Script ───────────────────────────── */
     async function loadCampaign() {
+      /* Preview mode: ?preview=1 bypasses the API entirely */
+      if (new URLSearchParams(window.location.search).get('preview') === '1') {
+        renderCampaign(MOCK_GLOBAL, MOCK_CONTENT);
+        return;
+      }
+
       var slug = getSlug();
       if (!slug) { showError(); return; }
 
