@@ -1,0 +1,994 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="lp-doc-title">Learn More — ThothAI Technologies</title>
+  <meta name="description" content="Official ThothAI Technologies campaign page."/>
+
+  <!-- Brand fonts (matches styles.css imports) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Shared site stylesheet (header, footer, base resets) -->
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <!-- Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+
+  <style>
+    /* ================================================================
+       LEARN.HTML — Campaign Landing Page
+       All custom selectors use "lp-" prefix to avoid styles.css clash.
+    ================================================================ */
+
+    /* -- Utilities -------------------------------------------------- */
+    .lp-hidden { display: none !important; }
+
+    /* Override global section text-align from styles.css */
+    #lp-content section { text-align: left; }
+
+    /* -- Stagger entrance (CSS transitions, triggered by .lp-show) -- */
+    .lp-animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lp-show .lp-animate           { opacity: 1; transform: translateY(0); }
+    .lp-show .lp-d2                { transition-delay: 0.08s; }
+    .lp-show .lp-d3                { transition-delay: 0.16s; }
+    .lp-show .lp-d4                { transition-delay: 0.24s; }
+    .lp-show .lp-d5                { transition-delay: 0.32s; }
+    .lp-show .lp-d6                { transition-delay: 0.40s; }
+
+    /* -- Loading state ---------------------------------------------- */
+    #lp-loading {
+      min-height: 68vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      background: #fff;
+    }
+    .lp-ring {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 3.5px solid #ffe9a7;
+      border-top-color: #da611f;
+      animation: lp-spin 0.75s linear infinite;
+    }
+    @keyframes lp-spin { to { transform: rotate(360deg); } }
+    .lp-loading-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    /* -- Error / 404 state ------------------------------------------ */
+    #lp-error {
+      min-height: 68vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem 5rem;
+      gap: 1rem;
+      background: #fff;
+    }
+    .lp-err-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #FFF9E6;
+      border: 2px solid rgba(240,197,16,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.3rem;
+    }
+    .lp-err-icon i { font-size: 2rem; color: #DA611F; }
+    #lp-error h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #0b1b1f;
+    }
+    #lp-error p {
+      color: #6b7280;
+      font-size: 0.96rem;
+      max-width: 340px;
+      line-height: 1.7;
+    }
+    .lp-err-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: linear-gradient(135deg, #f0c510, #da611f);
+      color: #0b1b1f;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(218,97,31,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 0.6rem;
+    }
+    .lp-err-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(218,97,31,0.42);
+    }
+
+    /* -- Verified ribbon -------------------------------------------- */
+    .lp-ribbon {
+      background: linear-gradient(90deg, #084033 0%, #0f6b5f 45%, #0d9488 100%);
+      padding: 0.58rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .lp-ribbon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -50deg,
+        rgba(255,255,255,0.025) 0px,
+        rgba(255,255,255,0.025) 2px,
+        transparent 2px,
+        transparent 10px
+      );
+      pointer-events: none;
+    }
+    .lp-ribbon-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .lp-ribbon-dot {
+      color: rgba(255,255,255,0.35);
+      font-size: 0.8rem;
+    }
+
+    /* -- Hero image -------------------------------------------------- */
+    .lp-hero {
+      position: relative;
+      width: 100%;
+      background: #0b1b1f;
+      overflow: hidden;
+      max-height: 460px;
+    }
+    .lp-hero-img {
+      width: 100%;
+      max-height: 460px;
+      display: block;
+      object-fit: cover;
+      animation: lp-kenburns 20s ease-in-out infinite alternate;
+    }
+    @keyframes lp-kenburns {
+      from { transform: scale(1); }
+      to   { transform: scale(1.07); }
+    }
+    .lp-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(11,27,31,0.04) 0%,
+        rgba(11,27,31,0.12) 50%,
+        rgba(11,27,31,0.62) 100%
+      );
+      pointer-events: none;
+    }
+    /* Floating "Verified" pill on the hero image */
+    .lp-hero-pill {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(240,197,16,0.93);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 999px;
+      padding: 0.32rem 0.85rem 0.32rem 0.58rem;
+      display: flex;
+      align-items: center;
+      gap: 0.38rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #0b1b1f;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+    }
+    /* Gradient placeholder when no media_url */
+    .lp-hero-placeholder {
+      min-height: 200px;
+      background: linear-gradient(135deg, #b84a11 0%, #da611f 45%, #f0c510 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* -- Campaign header -------------------------------------------- */
+    .lp-camp-header {
+      background: #fff;
+      padding: 2rem 1.5rem 1.2rem;
+    }
+    .lp-camp-header-inner { max-width: 760px; margin: 0 auto; }
+
+    .lp-wa-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #FFF9E6;
+      border: 1px solid rgba(218,97,31,0.2);
+      color: #DA611F;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.78rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+    .lp-wa-tag i { font-size: 0.82rem; }
+
+    .lp-camp-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.95rem;
+      font-weight: 700;
+      color: #0b1b1f;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.55rem;
+      text-align: left;
+    }
+    .lp-camp-subtitle {
+      font-size: 1.02rem;
+      color: #4b5563;
+      line-height: 1.65;
+      text-align: left;
+    }
+
+    /* -- Markdown body card ----------------------------------------- */
+    .lp-body-section {
+      background: #fff;
+      padding: 0.5rem 1.5rem 2rem;
+    }
+    .lp-md-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid rgba(218,97,31,0.1);
+      padding: 2rem;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.055);
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #1f2937;
+    }
+    /* Markdown typography */
+    .lp-md-card h1, .lp-md-card h2,
+    .lp-md-card h3, .lp-md-card h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      margin-top: 1.6rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+      color: #0b1b1f;
+    }
+    .lp-md-card h1:first-child,
+    .lp-md-card h2:first-child,
+    .lp-md-card h3:first-child { margin-top: 0; }
+    .lp-md-card h1 { font-size: 1.45rem; color: #DA611F; }
+    .lp-md-card h2 {
+      font-size: 1.2rem;
+      color: #DA611F;
+      border-bottom: 2px solid rgba(240,197,16,0.3);
+      padding-bottom: 0.35rem;
+    }
+    .lp-md-card h3 { font-size: 1.05rem; }
+    .lp-md-card p { margin-bottom: 1rem; }
+    .lp-md-card p:last-child { margin-bottom: 0; }
+    .lp-md-card strong { color: #0b1b1f; font-weight: 700; }
+    .lp-md-card em { color: #4b5563; }
+    .lp-md-card ul, .lp-md-card ol {
+      padding-left: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .lp-md-card li { margin-bottom: 0.42rem; }
+    .lp-md-card ul > li::marker { color: #DA611F; }
+    .lp-md-card ol > li::marker { color: #DA611F; font-weight: 700; }
+    .lp-md-card blockquote {
+      border-left: 4px solid #F0C510;
+      background: #FFF9E6;
+      margin: 1.2rem 0;
+      padding: 0.85rem 1.2rem;
+      border-radius: 0 10px 10px 0;
+      font-style: italic;
+      color: #4b5563;
+    }
+    .lp-md-card blockquote p { margin: 0; }
+    .lp-md-card code {
+      background: #f3f4f6;
+      border-radius: 5px;
+      padding: 0.1em 0.42em;
+      font-size: 0.86em;
+      color: #b84a11;
+      font-family: 'Courier New', monospace;
+    }
+    .lp-md-card hr {
+      border: none;
+      border-top: 2px solid rgba(240,197,16,0.3);
+      margin: 1.5rem 0;
+    }
+    .lp-md-card a { color: #DA611F; text-decoration: underline; transition: color 0.2s; }
+    .lp-md-card a:hover { color: #b84a11; }
+    .lp-md-card table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.92rem; }
+    .lp-md-card th {
+      background: #FFF9E6;
+      color: #0b1b1f;
+      font-weight: 700;
+      padding: 0.6rem 0.85rem;
+      border-bottom: 2px solid #F0C510;
+      text-align: left;
+    }
+    .lp-md-card td {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid rgba(240,197,16,0.2);
+      color: #374151;
+    }
+    .lp-md-card tr:last-child td { border-bottom: none; }
+
+    /* -- Trust / Payment section ------------------------------------ */
+    .lp-trust {
+      background: #FFF9E6;
+      padding: 1.6rem 1.5rem;
+      border-top: 1px solid rgba(240,197,16,0.28);
+      border-bottom: 1px solid rgba(240,197,16,0.28);
+    }
+    .lp-trust-inner { max-width: 760px; margin: 0 auto; }
+    .lp-trust-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .lp-trust-heading::before,
+    .lp-trust-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(218,97,31,0.16);
+    }
+    .lp-trust-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+    }
+    .lp-trust-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.38rem;
+    }
+    .lp-trust-item-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.63rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      text-align: center;
+    }
+    .lp-vsep {
+      width: 1px;
+      height: 52px;
+      background: rgba(218,97,31,0.16);
+      align-self: center;
+    }
+    /* ThothAI verified pill */
+    .lp-thothai-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: #fff;
+      border: 1.5px solid rgba(218,97,31,0.18);
+      border-radius: 14px;
+      padding: 0.7rem 1.1rem;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+    }
+    .lp-thothai-pill-text strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #0b1b1f;
+      line-height: 1.3;
+    }
+    .lp-thothai-pill-text span { font-size: 0.71rem; color: #6b7280; }
+
+    /* -- Spacer so footer clears sticky bar ------------------------- */
+    .lp-sticky-spacer { height: 90px; }
+
+    /* -- Sticky CTA bar --------------------------------------------- */
+    #lp-sticky {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 600;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(240,197,16,0.35);
+      padding: 0.82rem 1.5rem;
+      box-shadow: 0 -4px 28px rgba(0,0,0,0.09);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #lp-sticky.lp-up { transform: translateY(0); }
+
+    .lp-sticky-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .lp-sticky-copy { flex: 1; min-width: 0; }
+    .lp-sticky-copy strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #0b1b1f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lp-sticky-copy span { font-size: 0.72rem; color: #6b7280; }
+
+    .lp-cta-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #f0c510 0%, #da611f 100%);
+      color: #0b1b1f;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.82rem 1.85rem;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 6px 22px rgba(218,97,31,0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .lp-cta-btn:hover  { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(218,97,31,0.45); }
+    .lp-cta-btn:active { transform: translateY(0); }
+    .lp-cta-btn i      { font-size: 1rem; }
+
+    /* -- Responsive ------------------------------------------------- */
+    @media (max-width: 600px) {
+      .lp-camp-title    { font-size: 1.5rem; }
+      .lp-md-card       { padding: 1.4rem; }
+      .lp-body-section,
+      .lp-camp-header   { padding-left: 1rem; padding-right: 1rem; }
+      .lp-trust         { padding: 1.3rem 1rem; }
+      .lp-trust-row     { gap: 1.2rem; }
+      /* On small screens hide the sticky copy text — button spans full width */
+      .lp-sticky-copy   { display: none; }
+      .lp-cta-btn       { width: 100%; justify-content: center; font-size: 1rem; }
+      .lp-sticky-inner  { gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HEADER  — identical structure to index.html / privacy.html
+  ═══════════════════════════════════════════════════════ -->
+  <header class="header">
+    <div class="container">
+      <div class="brand">
+        <img class="brand-logo" src="transparent.jpg" alt="ThothAI Technologies"/>
+      </div>
+      <button class="menu-toggle" id="lp-menu-toggle" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <nav class="nav" id="lp-nav">
+        <a href="index.html#home"      class="nav-link">Home</a>
+        <a href="index.html#about"     class="nav-link">About</a>
+        <a href="index.html#services"  class="nav-link">Services</a>
+        <a href="index.html#faq"       class="nav-link">FAQ</a>
+        <a href="index.html#contact"   class="nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       LOADING STATE
+  ═══════════════════════════════════════════════════════ -->
+  <div id="lp-loading">
+    <div class="lp-ring"></div>
+    <p class="lp-loading-text">Loading campaign&hellip;</p>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       ERROR / 404 STATE
+  ═══════════════════════════════════════════════════════ -->
+  <div id="lp-error" class="lp-hidden">
+    <div class="lp-err-icon">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <h2>Campaign Not Found</h2>
+    <p>We couldn't find the page you're looking for. The link may have expired or the campaign ID is incorrect.</p>
+    <a href="https://wa.me/233533769658" class="lp-err-btn" target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp"></i>
+      Chat With Us on WhatsApp
+    </a>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       CAMPAIGN CONTENT  (hidden until data is loaded)
+  ═══════════════════════════════════════════════════════ -->
+  <div id="lp-content" class="lp-hidden">
+
+    <!-- Verified Business Ribbon -->
+    <div class="lp-ribbon lp-animate">
+      <!-- Shield SVG (all-vector, no PNG) -->
+      <svg width="15" height="17" viewBox="0 0 15 17" fill="none"
+           xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0">
+        <path d="M7.5 0L0 3V7.5C0 11.83 3.23 15.87 7.5 17C11.77 15.87 15 11.83 15 7.5V3L7.5 0Z"
+              fill="rgba(255,255,255,0.15)"/>
+        <path d="M7.5 1.4L1.2 4.1V7.5C1.2 11.3 3.94 14.92 7.5 15.9C11.06 14.92 13.8 11.3 13.8 7.5V4.1L7.5 1.4Z"
+              stroke="rgba(255,255,255,0.65)" stroke-width="0.7" fill="rgba(255,255,255,0.07)"/>
+        <path d="M4.8 8.2L6.6 10L10.5 6.1" stroke="#ffffff"
+              stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="lp-ribbon-text">Verified Business</span>
+      <span class="lp-ribbon-dot">·</span>
+      <span class="lp-ribbon-text">Official ThothAI Technologies</span>
+    </div>
+
+    <!-- Hero Image -->
+    <div class="lp-hero lp-animate lp-d2" id="lp-hero">
+      <img class="lp-hero-img" id="lp-hero-img" src="" alt="" loading="eager"/>
+      <div class="lp-hero-overlay"></div>
+      <!-- Floating "Verified" pill over hero -->
+      <div class="lp-hero-pill">
+        <svg width="11" height="12" viewBox="0 0 11 12" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M5.5 0L0 2.2V5.5C0 8.6 2.22 11.44 5.5 12C8.78 11.44 11 8.6 11 5.5V2.2L5.5 0Z"
+                fill="rgba(11,27,31,0.45)"/>
+          <path d="M3.2 5.7L4.6 7.1L7.9 3.9" stroke="#0b1b1f"
+                stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Verified
+      </div>
+    </div>
+
+    <!-- Campaign Title & Subtitle -->
+    <section class="lp-camp-header lp-animate lp-d3">
+      <div class="lp-camp-header-inner">
+        <div class="lp-wa-tag">
+          <i class="fa-brands fa-whatsapp"></i>
+          WhatsApp
+        </div>
+        <h1 class="lp-camp-title" id="lp-title"></h1>
+        <p class="lp-camp-subtitle" id="lp-subtitle"></p>
+      </div>
+    </section>
+
+    <!-- Markdown Body -->
+    <section class="lp-body-section lp-animate lp-d4" id="lp-body-section">
+      <div class="lp-md-card" id="lp-md-card">
+        <!-- Rendered markdown content injected here by JS -->
+      </div>
+    </section>
+
+    <!-- Secure Payment / Trust Section -->
+    <section class="lp-trust lp-animate lp-d5">
+      <div class="lp-trust-inner">
+        <div class="lp-trust-heading">Secure Payment Partner</div>
+        <div class="lp-trust-row">
+
+          <!-- Paystack SVG logo (no PNG) -->
+          <div class="lp-trust-item">
+            <svg width="114" height="34" viewBox="0 0 114 34" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Paystack">
+              <!-- Icon: two horizontal pill bars, Paystack brand colours -->
+              <rect x="0" y="5"  width="24" height="9" rx="4.5" fill="#00C3F7"/>
+              <rect x="0" y="18" width="17" height="9" rx="4.5" fill="#0BA4DB"/>
+              <!-- Wordmark -->
+              <text x="30" y="23" font-family="'Space Grotesk', Helvetica, sans-serif"
+                    font-size="15" font-weight="700" fill="#012A52">Paystack</text>
+            </svg>
+            <span class="lp-trust-item-label">Secure payments via</span>
+          </div>
+
+          <div class="lp-vsep"></div>
+
+          <!-- ThothAI Verified Shield (all-SVG, brand gradient) -->
+          <div class="lp-trust-item">
+            <div class="lp-thothai-pill">
+              <svg width="40" height="45" viewBox="0 0 40 45" fill="none"
+                   xmlns="http://www.w3.org/2000/svg" role="img"
+                   aria-label="Verified by ThothAI Technologies">
+                <defs>
+                  <linearGradient id="tg1" x1="0" y1="0" x2="40" y2="45" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%"   stop-color="#b84a11"/>
+                    <stop offset="100%" stop-color="#f0c510"/>
+                  </linearGradient>
+                  <linearGradient id="tg2" x1="0" y1="0" x2="40" y2="45" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%"   stop-color="#da611f"/>
+                    <stop offset="100%" stop-color="#ffd34a"/>
+                  </linearGradient>
+                  <filter id="tshadow" x="-15%" y="-10%" width="130%" height="130%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="2.5"
+                                  flood-color="rgba(184,74,17,0.38)"/>
+                  </filter>
+                </defs>
+                <!-- Outer shield -->
+                <path d="M20 0.5L1 8V20C1 31.7 9.42 42.55 20 44.5C30.58 42.55 39 31.7 39 20V8L20 0.5Z"
+                      fill="url(#tg1)" filter="url(#tshadow)"/>
+                <!-- Inner highlight layer -->
+                <path d="M20 4L4 10.5V20C4 30.2 11.4 40 20 41.8C28.6 40 36 30.2 36 20V10.5L20 4Z"
+                      fill="url(#tg2)" opacity="0.55"/>
+                <!-- Inner glass sheen -->
+                <path d="M20 6.5L6.5 12.5V20C6.5 25 8.8 29.8 12 33.2L20 38L28 33.2C31.2 29.8 33.5 25 33.5 20V12.5L20 6.5Z"
+                      fill="rgba(255,255,255,0.08)"/>
+                <!-- Checkmark -->
+                <path d="M12 21L17.5 26.5L28.5 15.5"
+                      stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="lp-thothai-pill-text">
+                <strong>Verified by ThothAI</strong>
+                <span>Technologies</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacer so last content clears the sticky bar -->
+    <div class="lp-sticky-spacer lp-animate lp-d6"></div>
+
+  </div><!-- /#lp-content -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER  — identical to index.html
+  ═══════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+
+          <div class="footer-brand">
+            <img src="transparent.jpg" alt="ThothAI Technologies" class="footer-logo">
+            <p>AI automation solutions helping businesses eliminate repetitive tasks and scale efficiently.</p>
+          </div>
+
+          <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="index.html#home">Home</a></li>
+              <li><a href="index.html#about">About</a></li>
+              <li><a href="index.html#services">Services</a></li>
+              <li><a href="index.html#case-studies">Case Studies</a></li>
+              <li><a href="index.html#how-we-work">How We Work</a></li>
+              <li><a href="index.html#faq">FAQ</a></li>
+              <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-contact">
+            <h4>Get in Touch</h4>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-phone"></i>
+              <a href="tel:+233533769658">+233 533 769 658</a>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-envelope"></i>
+              <a href="mailto:admin@thothaigh.com">admin@thothaigh.com</a>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-map-marker-alt"></i>
+              <span>Apeguso, Eastern Region, Ghana</span>
+            </div>
+            <div class="footer-socials">
+              <a href="https://www.facebook.com/profile.php?id=61583396443171&mibextid=ZbWKwL" aria-label="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+              </a>
+              <a href="https://www.instagram.com/_.t.h.othai?igsh=MTFvbDJsMTQ3enF3Ng==" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://wa.me/233533769658" aria-label="WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 ThothAI Technologies. Digital Address: EA-0750-2782.</p>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       STICKY CTA BAR  (slides up after content renders)
+  ═══════════════════════════════════════════════════════ -->
+  <div id="lp-sticky" class="lp-hidden">
+    <div class="lp-sticky-inner">
+      <div class="lp-sticky-copy">
+        <strong id="lp-sticky-label">Get Started</strong>
+        <span>Continue on WhatsApp</span>
+      </div>
+      <a id="lp-cta-btn" href="#" class="lp-cta-btn"
+         target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span id="lp-cta-label">Get Started</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Config ──────────────────────────────────────────────────── */
+    var GAS_URL     = 'https://thothai-chatbot.aithoth6.workers.dev/campaign';
+    var FALLBACK_WA = 'https://wa.me/233533769658';
+
+    /* ── Preview mock data (?preview=1) ──────────────────────────── *
+     * Only used locally. Never fires in production campaign links.   */
+    var MOCK_GLOBAL = {
+      tagline: 'AI automation for modern businesses across Ghana & Africa',
+      default_cta_label: 'Get Started on WhatsApp',
+      default_whatsapp: 'https://wa.me/233533769658'
+    };
+    var MOCK_CONTENT = {
+      id:           'payment-launch',
+      title:        'Automate Your Business with AI — Launch Offer',
+      subtitle:     'Exclusive limited-time pricing for our WhatsApp community. Act before the end of the month.',
+      media_url:    'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=900&q=80',
+      body_content: [
+        '## What You Get',
+        '',
+        '- **24/7 WhatsApp order automation** — your AI handles customer messages around the clock',
+        '- **Custom AI chatbot** trained specifically on your products and services',
+        '- **Order management dashboard** — track every order from one place',
+        '- **Multi-channel support** — WhatsApp, Instagram, Facebook Messenger',
+        '- **Priority onboarding** — go live in under 48 hours',
+        '',
+        '## Why Act Now?',
+        '',
+        'We are offering a **special launch price** to our early adopters. Once this cohort is full, pricing returns to standard rates.',
+        '',
+        '> "ThothAI completely transformed how we handle customer orders. No more missed calls, no more messy order sheets." — *Severina, Severina Plus Restaurant*',
+        '',
+        '## Pricing',
+        '',
+        '| Plan | Monthly Price | Messages Included |',
+        '|------|--------------|-------------------|',
+        '| Starter | GHS 500 | 500 messages |',
+        '| Growth | GHS 1,200 | Unlimited |',
+        '| Enterprise | Custom | Full automation suite |',
+        '',
+        '**All plans include a 14-day free trial.** No credit card required to start.',
+        '',
+        '## How It Works',
+        '',
+        '1. **Consultation** — We analyse your current workflow',
+        '2. **Setup** — Your AI is configured and tested',
+        '3. **Go Live** — Your customers start interacting immediately',
+        '4. **Support** — We monitor and optimise performance for you'
+      ].join('\n'),
+      cta_label:    'Claim Your Offer on WhatsApp',
+      cta_url:      'https://wa.me/233533769658?text=I%20want%20to%20claim%20the%20ThothAI%20launch%20offer'
+    };
+
+    /* ── DOM refs ─────────────────────────────────────────────────── */
+    var elLoading = document.getElementById('lp-loading');
+    var elError   = document.getElementById('lp-error');
+    var elContent = document.getElementById('lp-content');
+    var elSticky  = document.getElementById('lp-sticky');
+
+    /* ── Helpers ──────────────────────────────────────────────────── */
+    function show(el) { el.classList.remove('lp-hidden'); }
+    function hide(el) { el.classList.add('lp-hidden'); }
+
+    function getSlug() {
+      return (new URLSearchParams(window.location.search).get('id') || '').trim();
+    }
+
+    function setDocTitle(title) {
+      document.getElementById('lp-doc-title').textContent =
+        title + ' — ThothAI Technologies';
+    }
+
+    function renderMarkdown(md) {
+      if (typeof marked !== 'undefined') {
+        return marked.parse(md, { gfm: true, breaks: true });
+      }
+      /* Fallback when CDN fails */
+      return '<p>' + md
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\n{2,}/g, '</p><p>')
+        .replace(/\n/g, '<br>') + '</p>';
+    }
+
+    function showError() {
+      hide(elLoading);
+      show(elError);
+    }
+
+    /* ── Render campaign content ──────────────────────────────────── */
+    function renderCampaign(global, content) {
+
+      /* Safe field extraction — only non-empty cells come from the API */
+      var title    = content.title         || content.id               || 'Special Offer';
+      var subtitle = content.subtitle      || global.tagline           || '';
+      var heroSrc  = content.media_url     || '';
+      var bodyMd   = content.body_content  || '';
+      var ctaLabel = content.cta_label     || global.default_cta_label || 'Get Started on WhatsApp';
+      var ctaUrl   = content.cta_url       || global.default_whatsapp  || FALLBACK_WA;
+
+      /* Page meta */
+      setDocTitle(title);
+
+      /* Hero image */
+      var heroWrap = document.getElementById('lp-hero');
+      var heroImg  = document.getElementById('lp-hero-img');
+      if (heroSrc) {
+        heroImg.src = heroSrc;
+        heroImg.alt = title;
+      } else {
+        heroWrap.style.display = 'none';
+      }
+
+      /* Title & subtitle */
+      document.getElementById('lp-title').textContent = title;
+      var subEl = document.getElementById('lp-subtitle');
+      if (subtitle) {
+        subEl.textContent = subtitle;
+      } else {
+        subEl.style.display = 'none';
+      }
+
+      /* Markdown body */
+      var mdCard      = document.getElementById('lp-md-card');
+      var bodySection = document.getElementById('lp-body-section');
+      if (bodyMd) {
+        mdCard.innerHTML = renderMarkdown(bodyMd);
+      } else {
+        bodySection.style.display = 'none';
+      }
+
+      /* CTA wiring */
+      var ctaBtn = document.getElementById('lp-cta-btn');
+      ctaBtn.href = ctaUrl;
+      document.getElementById('lp-cta-label').textContent  = ctaLabel;
+      document.getElementById('lp-sticky-label').textContent = ctaLabel;
+
+      /* Show content with stagger transitions */
+      hide(elLoading);
+      show(elContent);
+      /* Double rAF ensures the browser has painted before triggering transitions */
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          elContent.classList.add('lp-show');
+        });
+      });
+
+      /* Slide sticky bar up after a short delay */
+      setTimeout(function () {
+        show(elSticky);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            elSticky.classList.add('lp-up');
+          });
+        });
+        /* Push body down so footer content is not obscured */
+        document.body.style.paddingBottom = '90px';
+      }, 650);
+    }
+
+    /* ── Fetch from Google Apps Script ───────────────────────────── */
+    async function loadCampaign() {
+      /* Preview mode: ?preview=1 bypasses the API entirely */
+      if (new URLSearchParams(window.location.search).get('preview') === '1') {
+        renderCampaign(MOCK_GLOBAL, MOCK_CONTENT);
+        return;
+      }
+
+      var slug = getSlug();
+      if (!slug) { showError(); return; }
+
+      try {
+        var res  = await fetch(GAS_URL + '?id=' + encodeURIComponent(slug));
+        var data = await res.json();
+
+        /*
+         * Apps Script returns { error: "Campaign not found" } when slug
+         * doesn't match. Note: that response has no CORS header, so the
+         * fetch itself may throw — hence the surrounding try/catch.
+         */
+        if (data.error || !data.content) { showError(); return; }
+
+        renderCampaign(data.global || {}, data.content);
+
+      } catch (_) {
+        /* Covers CORS block on "not found" response + any network failure */
+        showError();
+      }
+    }
+
+    /* ── Mobile nav toggle (index.js not loaded on this page) ─────── */
+    var menuToggle = document.getElementById('lp-menu-toggle');
+    var nav        = document.getElementById('lp-nav');
+    if (menuToggle && nav) {
+      menuToggle.addEventListener('click', function () {
+        nav.classList.toggle('active');
+      });
+      nav.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          nav.classList.remove('active');
+        });
+      });
+    }
+
+    /* ── Boot ─────────────────────────────────────────────────────── */
+    loadCampaign();
+
+  })();
+  </script>
+
+</body>
+</html>
