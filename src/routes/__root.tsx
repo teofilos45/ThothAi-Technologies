@@ -79,14 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "ThothFood — Hungry? Just WhatsApp it." },
+      { name: "description", content: "Order food on WhatsApp from your favourite restaurants in Ghana. No app to download. Pay with MoMo. Delivery or pickup." },
+      { name: "author", content: "ThothAI Technologies" },
+      { property: "og:title", content: "ThothFood — Hungry? Just WhatsApp it." },
+      { property: "og:description", content: "Order food on WhatsApp from your favourite restaurants in Ghana. No app to download." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#F69B12" },
     ],
     links: [
       {
