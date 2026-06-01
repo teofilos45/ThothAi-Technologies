@@ -10,8 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -79,11 +77,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ThothFood — Hungry? Just WhatsApp it." },
-      { name: "description", content: "Order food on WhatsApp from your favourite restaurants in Ghana. No app to download. Pay with MoMo. Delivery or pickup." },
+      { title: "ThothAI Technologies — Building WhatsApp Commerce for Africa" },
+      { name: "description", content: "ThothAI Technologies builds WhatsApp-native commerce tools for the African market — starting with Ghana." },
       { name: "author", content: "ThothAI Technologies" },
-      { property: "og:title", content: "ThothFood — Hungry? Just WhatsApp it." },
-      { property: "og:description", content: "Order food on WhatsApp from your favourite restaurants in Ghana. No app to download." },
+      { property: "og:title", content: "ThothAI Technologies" },
+      { property: "og:description", content: "Building WhatsApp Commerce for Africa." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#F69B12" },
@@ -120,13 +118,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      <Outlet />
     </QueryClientProvider>
   );
 }

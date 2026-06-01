@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Mail, MapPin, MessageCircle, Send, CheckCircle2 } from "lucide-react";
 
-export const Route = createFileRoute("/contact")({
+export const Route = createFileRoute("/thothfood/contact")({
   head: () => ({
     meta: [
       { title: "Contact — ThothFood" },
@@ -114,7 +114,7 @@ function Contact() {
               </span>
               <h3 className="mt-5 font-display text-lg font-bold">Email</h3>
               <p className="mt-1 text-foreground/65">
-                <a href="mailto:contact@thothai.com" className="hover:text-primary">contact@thothai.com</a>
+                <a href="mailto:admin@thothaigh.com" className="hover:text-primary">admin@thothaigh.com</a>
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-secondary p-6">

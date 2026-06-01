@@ -10,35 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as RestaurantsRouteImport } from './routes/restaurants'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as HowItWorksRouteImport } from './routes/how-it-works'
-import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ThothfoodRouteRouteImport } from './routes/thothfood/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ThothfoodIndexRouteImport } from './routes/thothfood/index'
+import { Route as ThothfoodRestaurantsRouteImport } from './routes/thothfood/restaurants'
+import { Route as ThothfoodPricingRouteImport } from './routes/thothfood/pricing'
+import { Route as ThothfoodHowItWorksRouteImport } from './routes/thothfood/how-it-works'
+import { Route as ThothfoodContactRouteImport } from './routes/thothfood/contact'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RestaurantsRoute = RestaurantsRouteImport.update({
-  id: '/restaurants',
-  path: '/restaurants',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HowItWorksRoute = HowItWorksRouteImport.update({
-  id: '/how-it-works',
-  path: '/how-it-works',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const ThothfoodRouteRoute = ThothfoodRouteRouteImport.update({
+  id: '/thothfood',
+  path: '/thothfood',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -46,65 +33,97 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ThothfoodIndexRoute = ThothfoodIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ThothfoodRouteRoute,
+} as any)
+const ThothfoodRestaurantsRoute = ThothfoodRestaurantsRouteImport.update({
+  id: '/restaurants',
+  path: '/restaurants',
+  getParentRoute: () => ThothfoodRouteRoute,
+} as any)
+const ThothfoodPricingRoute = ThothfoodPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => ThothfoodRouteRoute,
+} as any)
+const ThothfoodHowItWorksRoute = ThothfoodHowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => ThothfoodRouteRoute,
+} as any)
+const ThothfoodContactRoute = ThothfoodContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => ThothfoodRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
-  '/how-it-works': typeof HowItWorksRoute
-  '/pricing': typeof PricingRoute
-  '/restaurants': typeof RestaurantsRoute
+  '/thothfood': typeof ThothfoodRouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/thothfood/contact': typeof ThothfoodContactRoute
+  '/thothfood/how-it-works': typeof ThothfoodHowItWorksRoute
+  '/thothfood/pricing': typeof ThothfoodPricingRoute
+  '/thothfood/restaurants': typeof ThothfoodRestaurantsRoute
+  '/thothfood/': typeof ThothfoodIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
-  '/how-it-works': typeof HowItWorksRoute
-  '/pricing': typeof PricingRoute
-  '/restaurants': typeof RestaurantsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/thothfood/contact': typeof ThothfoodContactRoute
+  '/thothfood/how-it-works': typeof ThothfoodHowItWorksRoute
+  '/thothfood/pricing': typeof ThothfoodPricingRoute
+  '/thothfood/restaurants': typeof ThothfoodRestaurantsRoute
+  '/thothfood': typeof ThothfoodIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
-  '/how-it-works': typeof HowItWorksRoute
-  '/pricing': typeof PricingRoute
-  '/restaurants': typeof RestaurantsRoute
+  '/thothfood': typeof ThothfoodRouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/thothfood/contact': typeof ThothfoodContactRoute
+  '/thothfood/how-it-works': typeof ThothfoodHowItWorksRoute
+  '/thothfood/pricing': typeof ThothfoodPricingRoute
+  '/thothfood/restaurants': typeof ThothfoodRestaurantsRoute
+  '/thothfood/': typeof ThothfoodIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/contact'
-    | '/how-it-works'
-    | '/pricing'
-    | '/restaurants'
+    | '/thothfood'
     | '/sitemap.xml'
+    | '/thothfood/contact'
+    | '/thothfood/how-it-works'
+    | '/thothfood/pricing'
+    | '/thothfood/restaurants'
+    | '/thothfood/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/contact'
-    | '/how-it-works'
-    | '/pricing'
-    | '/restaurants'
     | '/sitemap.xml'
+    | '/thothfood/contact'
+    | '/thothfood/how-it-works'
+    | '/thothfood/pricing'
+    | '/thothfood/restaurants'
+    | '/thothfood'
   id:
     | '__root__'
     | '/'
-    | '/contact'
-    | '/how-it-works'
-    | '/pricing'
-    | '/restaurants'
+    | '/thothfood'
     | '/sitemap.xml'
+    | '/thothfood/contact'
+    | '/thothfood/how-it-works'
+    | '/thothfood/pricing'
+    | '/thothfood/restaurants'
+    | '/thothfood/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ContactRoute: typeof ContactRoute
-  HowItWorksRoute: typeof HowItWorksRoute
-  PricingRoute: typeof PricingRoute
-  RestaurantsRoute: typeof RestaurantsRoute
+  ThothfoodRouteRoute: typeof ThothfoodRouteRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -117,32 +136,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/restaurants': {
-      id: '/restaurants'
-      path: '/restaurants'
-      fullPath: '/restaurants'
-      preLoaderRoute: typeof RestaurantsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/how-it-works': {
-      id: '/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/how-it-works'
-      preLoaderRoute: typeof HowItWorksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/thothfood': {
+      id: '/thothfood'
+      path: '/thothfood'
+      fullPath: '/thothfood'
+      preLoaderRoute: typeof ThothfoodRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -152,17 +150,79 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/thothfood/': {
+      id: '/thothfood/'
+      path: '/'
+      fullPath: '/thothfood/'
+      preLoaderRoute: typeof ThothfoodIndexRouteImport
+      parentRoute: typeof ThothfoodRouteRoute
+    }
+    '/thothfood/restaurants': {
+      id: '/thothfood/restaurants'
+      path: '/restaurants'
+      fullPath: '/thothfood/restaurants'
+      preLoaderRoute: typeof ThothfoodRestaurantsRouteImport
+      parentRoute: typeof ThothfoodRouteRoute
+    }
+    '/thothfood/pricing': {
+      id: '/thothfood/pricing'
+      path: '/pricing'
+      fullPath: '/thothfood/pricing'
+      preLoaderRoute: typeof ThothfoodPricingRouteImport
+      parentRoute: typeof ThothfoodRouteRoute
+    }
+    '/thothfood/how-it-works': {
+      id: '/thothfood/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/thothfood/how-it-works'
+      preLoaderRoute: typeof ThothfoodHowItWorksRouteImport
+      parentRoute: typeof ThothfoodRouteRoute
+    }
+    '/thothfood/contact': {
+      id: '/thothfood/contact'
+      path: '/contact'
+      fullPath: '/thothfood/contact'
+      preLoaderRoute: typeof ThothfoodContactRouteImport
+      parentRoute: typeof ThothfoodRouteRoute
+    }
   }
 }
 
+interface ThothfoodRouteRouteChildren {
+  ThothfoodContactRoute: typeof ThothfoodContactRoute
+  ThothfoodHowItWorksRoute: typeof ThothfoodHowItWorksRoute
+  ThothfoodPricingRoute: typeof ThothfoodPricingRoute
+  ThothfoodRestaurantsRoute: typeof ThothfoodRestaurantsRoute
+  ThothfoodIndexRoute: typeof ThothfoodIndexRoute
+}
+
+const ThothfoodRouteRouteChildren: ThothfoodRouteRouteChildren = {
+  ThothfoodContactRoute: ThothfoodContactRoute,
+  ThothfoodHowItWorksRoute: ThothfoodHowItWorksRoute,
+  ThothfoodPricingRoute: ThothfoodPricingRoute,
+  ThothfoodRestaurantsRoute: ThothfoodRestaurantsRoute,
+  ThothfoodIndexRoute: ThothfoodIndexRoute,
+}
+
+const ThothfoodRouteRouteWithChildren = ThothfoodRouteRoute._addFileChildren(
+  ThothfoodRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ContactRoute: ContactRoute,
-  HowItWorksRoute: HowItWorksRoute,
-  PricingRoute: PricingRoute,
-  RestaurantsRoute: RestaurantsRoute,
+  ThothfoodRouteRoute: ThothfoodRouteRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

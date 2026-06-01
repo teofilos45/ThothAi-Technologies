@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   LayoutDashboard, MenuSquare, Wallet, MapPin, Users, Megaphone, BarChart3,
-  ShieldCheck, Truck, Sparkles, ArrowRight, CheckCircle2
+  ShieldCheck, Truck, Sparkles, ArrowRight,
 } from "lucide-react";
 
-export const Route = createFileRoute("/restaurants")({
+export const Route = createFileRoute("/thothfood/restaurants")({
   head: () => ({
     meta: [
       { title: "For Restaurants — ThothFood" },
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/restaurants")({
 });
 
 const features = [
-  { icon: LayoutDashboard, title: "Real-time kitchen dashboard", desc: "Every incoming order. Live. One screen. No printer chaos." },
+  { icon: LayoutDashboard, title: "Real-time kitchen dashboard", desc: "Every incoming order. Live. One screen. No missed orders." },
   { icon: MenuSquare, title: "Menu management", desc: "Update items, prices, photos, availability — pushed to WhatsApp instantly." },
   { icon: Wallet, title: "MoMo + auto commission split", desc: "Customers pay via Paystack. Payouts and commission are handled automatically." },
   { icon: MapPin, title: "Delivery zone control", desc: "Draw your zones. Set per-zone fees and minimums. Stop losing money on far deliveries." },
@@ -30,7 +30,7 @@ const features = [
 const onboarding = [
   "Create your account", "Set up your restaurant profile", "Connect your WhatsApp number",
   "Upload your menu", "Configure delivery zones", "Connect payments (Paystack/MoMo)",
-  "Invite your team", "Go live",
+  "Go live",
 ];
 
 function Restaurants() {
@@ -50,17 +50,17 @@ function Restaurants() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to="/contact"
+                to="/thothfood/contact"
                 className="inline-flex h-14 items-center gap-2 rounded-full bg-primary px-7 font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_oklch(0.745_0.165_60/0.55)]"
               >
                 Get my restaurant on ThothFood <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link
-                to="/pricing"
+              <a
+                href="https://app.thothaigh.com/onboarding"
                 className="inline-flex h-14 items-center rounded-full border border-border px-6 font-semibold hover:bg-muted"
               >
-                See pricing
-              </Link>
+                Get Started
+              </a>
             </div>
           </div>
 
@@ -134,13 +134,10 @@ function Restaurants() {
         <div className="container-page">
           <div className="grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-primary">8-step onboarding</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-primary">Simple setup. You're guided through everything.</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight md:text-5xl">
-                Live in days, not months.
+                Go live. Start taking orders. Right now.
               </h2>
-              <p className="mt-4 max-w-md text-foreground/65">
-                Our team walks you through every step. Most restaurants are taking real orders within a week.
-              </p>
             </div>
             <ol className="grid gap-3 sm:grid-cols-2">
               {onboarding.map((step, i) => (
@@ -190,14 +187,14 @@ function Restaurants() {
             <h2 className="font-display text-3xl font-extrabold tracking-tight md:text-5xl">
               Ready to take orders on WhatsApp?
             </h2>
-            <p className="mt-2 text-base opacity-80">Tell us about your restaurant. We'll handle the rest.</p>
+            <p className="mt-2 text-base opacity-80">Your menu. Your number. Your dashboard. Everything's waiting.</p>
           </div>
-          <Link
-            to="/contact"
+          <a
+            href="https://app.thothaigh.com/onboarding"
             className="inline-flex h-14 items-center gap-2 rounded-full bg-dark px-8 font-semibold text-dark-foreground hover:bg-dark-card"
           >
-            Get in touch <ArrowRight className="h-4 w-4" />
-          </Link>
+            Get Started <ArrowRight className="h-4 w-4" />
+          </a>
         </div>
       </section>
     </>

@@ -3,10 +3,10 @@ import { useState } from "react";
 import { Menu, X, MessageCircle } from "lucide-react";
 
 const links = [
-  { to: "/how-it-works", label: "How it works" },
-  { to: "/restaurants", label: "For Restaurants" },
-  { to: "/pricing", label: "Pricing" },
-  { to: "/contact", label: "Contact" },
+  { to: "/thothfood/how-it-works", label: "How it works" },
+  { to: "/thothfood/restaurants", label: "For Restaurants" },
+  { to: "/thothfood/pricing", label: "Pricing" },
+  { to: "/thothfood/contact", label: "Contact" },
 ] as const;
 
 export function Header() {
@@ -14,7 +14,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight">
+        <Link to="/thothfood/" className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">
             <MessageCircle className="h-4 w-4" strokeWidth={2.5} />
           </span>
@@ -27,7 +27,7 @@ export function Header() {
               key={l.to}
               to={l.to}
               className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
-              activeProps={{ className: "text-foreground" }}
+              activeProps={{ className: "text-foreground border-b-2 border-primary pb-0.5" }}
             >
               {l.label}
             </Link>

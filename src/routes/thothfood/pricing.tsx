@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, MessageCircle, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/pricing")({
+export const Route = createFileRoute("/thothfood/pricing")({
   head: () => ({
     meta: [
       { title: "Pricing — ThothFood" },
@@ -54,7 +54,7 @@ function Pricing() {
                 Our team works with you to set a fair commission and onboarding plan based on your order volume, average ticket, and delivery setup.
               </p>
               <Link
-                to="/contact"
+                to="/thothfood/contact"
                 className="mt-8 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-7 font-semibold text-primary-foreground"
               >
                 Talk to us <ArrowRight className="h-4 w-4" />
@@ -87,17 +87,17 @@ function Pricing() {
         <div className="container-page">
           <div className="rounded-3xl bg-primary p-10 text-center text-primary-foreground md:p-14">
             <h2 className="mx-auto max-w-2xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
-              Tell us about your restaurant.
+              Ready to take orders on WhatsApp?
             </h2>
             <p className="mx-auto mt-3 max-w-lg opacity-80">
-              We'll come back with a plan that actually fits.
+              Your menu. Your number. Your dashboard. Everything's waiting.
             </p>
-            <Link
-              to="/contact"
+            <a
+              href="https://app.thothaigh.com/onboarding"
               className="mt-7 inline-flex h-14 items-center gap-2 rounded-full bg-dark px-8 font-semibold text-dark-foreground hover:bg-dark-card"
             >
-              <MessageCircle className="h-5 w-5" /> Get in touch
-            </Link>
+              Get Started <ArrowRight className="h-4 w-4" />
+            </a>
           </div>
         </div>
       </section>

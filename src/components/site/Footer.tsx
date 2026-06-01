@@ -20,7 +20,7 @@ export function Footer() {
               </p>
             </div>
             <Link
-              to="/contact"
+              to="/thothfood/contact"
               className="inline-flex h-12 items-center rounded-full bg-white/10 px-6 text-sm font-semibold text-white transition-colors hover:bg-white/15"
             >
               Get early access
@@ -30,7 +30,7 @@ export function Footer() {
 
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link to="/" className="flex items-center gap-2 font-display text-2xl font-extrabold">
+            <Link to="/thothfood/" className="flex items-center gap-2 font-display text-2xl font-extrabold">
               <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
                 <MessageCircle className="h-4 w-4" strokeWidth={2.5} />
               </span>
@@ -47,10 +47,10 @@ export function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold uppercase tracking-wider text-white/50">Product</h4>
             <ul className="mt-4 space-y-3 text-sm">
-              <li><Link to="/how-it-works" className="text-white/70 hover:text-primary">How it works</Link></li>
-              <li><Link to="/restaurants" className="text-white/70 hover:text-primary">For Restaurants</Link></li>
-              <li><Link to="/pricing" className="text-white/70 hover:text-primary">Pricing</Link></li>
-              <li><Link to="/contact" className="text-white/70 hover:text-primary">Contact</Link></li>
+              <li><Link to="/thothfood/how-it-works" className="text-white/70 hover:text-primary">How it works</Link></li>
+              <li><Link to="/thothfood/restaurants" className="text-white/70 hover:text-primary">For Restaurants</Link></li>
+              <li><Link to="/thothfood/pricing" className="text-white/70 hover:text-primary">Pricing</Link></li>
+              <li><Link to="/thothfood/contact" className="text-white/70 hover:text-primary">Contact</Link></li>
             </ul>
           </div>
 
@@ -69,7 +69,7 @@ export function Footer() {
               ))}
             </div>
             <p className="mt-6 text-xs text-white/40">
-              contact@thothai.com
+              admin@thothaigh.com
             </p>
           </div>
         </div>
